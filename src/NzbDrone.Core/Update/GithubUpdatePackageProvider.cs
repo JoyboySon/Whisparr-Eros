@@ -159,7 +159,8 @@ namespace NzbDrone.Core.Update
                 {
                     asset = release.assets.FirstOrDefault(a =>
                         a.name.Contains(osAssetString, StringComparison.OrdinalIgnoreCase) &&
-                        a.name.Contains(arch, StringComparison.OrdinalIgnoreCase));
+                        a.name.Contains(arch, StringComparison.OrdinalIgnoreCase) &&
+                        a.name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase));
                 }
 
                 if (asset == null)
