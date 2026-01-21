@@ -36,6 +36,21 @@ namespace Whisparr.Http.ClientSchema
             {
                 var field = mapping.Field.Clone();
                 field.Value = mapping.GetterFunc(model);
+                if (field.Type == "select" && field.SelectOptions != null)
+                {
+                    if (mapping.PropertyType.IsEnum &&
+                        mapping.PropertyType.Namespace?.Contains("StashDB") == true)
+                    {
+                        var intValue = (int)field.Value;
+
+                        var match = field.SelectOptions.FirstOrDefault(o => o.Value == intValue);
+
+                        if (match != null)
+                        {
+                            field.Value = match.Value;
+                        }
+                    }
+                }
 
                 if (field.Value != null && !field.Value.Equals(string.Empty) &&
                     (field.Privacy == PrivacyLevel.ApiKey || field.Privacy == PrivacyLevel.Password))
